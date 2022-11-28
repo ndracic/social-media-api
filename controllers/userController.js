@@ -8,7 +8,6 @@ module.exports = {
   },
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
-      .select('-__v')
       .populate('reactions')
       .then((user) =>
         !user

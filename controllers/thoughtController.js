@@ -1,13 +1,11 @@
 const { User, Thought } = require("../models");
 
 module.exports = {
-  // Get all thoughts
   getThoughts(req, res) {
     Thought.find({})
       .then((thought) => res.json(thought))
       .catch((error) => res.status(400).json(error));
   },
-  // get single thought
   getAThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       .select("-__v")
@@ -18,7 +16,6 @@ module.exports = {
       )
       .catch((error) => res.status(400).json(error));
   },
-  //create a thought and push the created thought's _id to the associated user's thoughts array field
   createAThought(req, res) {
     Thought.create(req.body)
       .then(({ _id }) => {
@@ -35,7 +32,6 @@ module.exports = {
       )
       .catch((error) => res.status(400).json(error));
   },
-  //update a thought
   updateThought(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
@@ -49,7 +45,6 @@ module.exports = {
       )
       .catch((error) => res.status(400).json(error));
   },
-  //delete a thought
   removeThought(req, res) {
     Thought.findOneAndDelete({ _id: req.params.thoughtId })
       .then((thought) =>
@@ -68,7 +63,7 @@ module.exports = {
       )
       .catch((error) => res.status(400).json(error));
   },
-  //create reaction
+  
   addReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
@@ -82,12 +77,12 @@ module.exports = {
       )
       .catch((error) => res.status(400).json(error));
   },
-  //delete reaction
+
   deleteReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
       { $pull: { reactions: { reactionId: req.params.reactionId } } },
-      { runValidators: true, new: true }
+      { new: true }
     )
       .then((thought) =>
         !thought
